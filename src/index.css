@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Updated body gradient using raw CSS colors for black and cream theme */
+body {
+  background: linear-gradient(
+    to right,
+    #000000,    /* black */
+    #8A2BE2,    /* cyberPurple accent */
+    #FFF9F0     /* cream white */
+  );
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.ripple-effect {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  background: rgba(255, 110, 199, 0.5); /* neon pink vibe */
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+  animation: ripple 0.6s ease-out forwards;
+  z-index: 9999;
+}
+
+@keyframes ripple {
+  to {
+    transform: translate(-50%, -50%) scale(5);
+    opacity: 0;
+  }
+}
+
