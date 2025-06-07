@@ -180,34 +180,74 @@ const Contact = ({ darkMode }) => {
     }
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setStatus("Sending...");
+
+  //   const data = new FormData();
+  //   data.append("name", formData.name);
+  //   data.append("email", formData.email);
+  //   data.append("message", formData.message);
+  //   if (formData.file) data.append("file", formData.file);
+
+  //   try {
+  //     const res = await fetch("http://localhost:5000/api/contact", {
+  //       method: "POST",
+  //       body: data,
+  //     });
+
+  //     const result = await res.json();
+
+  //     if (res.ok) {
+  //       setStatus("Message sent successfully!");
+  //       setFormData({ name: "", email: "", message: "", file: null });
+  //     } else {
+  //       setStatus(result.error || "Failed to send message");
+  //     }
+  //   } catch (error) {
+  //     setStatus("Failed to send message");
+  //   }
+  // };
+
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setStatus("Sending...");
+  e.preventDefault();
+  setStatus("Sending...");
 
-    const data = new FormData();
-    data.append("name", formData.name);
-    data.append("email", formData.email);
-    data.append("message", formData.message);
-    if (formData.file) data.append("file", formData.file);
+  const API_BASE_URL = import.meta.env.VITE_API_URL;
 
-    try {
-      const res = await fetch("http://localhost:5000/api/contact", {
-        method: "POST",
-        body: data,
-      });
+  if (!API_BASE_URL) {
+    setStatus("Configuration error: API URL not set");
+    console.warn("VITE_API_URL is not defined in .env");
+    return;
+  }
 
-      const result = await res.json();
+  const data = new FormData();
+  data.append("name", formData.name);
+  data.append("email", formData.email);
+  data.append("message", formData.message);
+  if (formData.file) data.append("file", formData.file);
 
-      if (res.ok) {
-        setStatus("Message sent successfully!");
-        setFormData({ name: "", email: "", message: "", file: null });
-      } else {
-        setStatus(result.error || "Failed to send message");
-      }
-    } catch (error) {
-      setStatus("Failed to send message");
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/contact`, {
+      method: "POST",
+      body: data,
+    });
+
+    const result = await res.json();
+
+    if (res.ok) {
+      setStatus("Message sent successfully!");
+      setFormData({ name: "", email: "", message: "", file: null });
+    } else {
+      setStatus(result.error || "Failed to send message");
     }
-  };
+  } catch (error) {
+    console.error("Error submitting contact form:", error);
+    setStatus("Failed to send message");
+  }
+};
+
 
   const ref = useRef(null);
   const controls = useAnimation();
